@@ -4,7 +4,7 @@ import com.mitchelletakuro.mqttchat.view.BaseView;
 
 public class BasePresenter<E extends BaseView>
 {
-    public E view;
+    E view;
 
     BasePresenter(E view){
         this.attachView(view);
@@ -12,7 +12,7 @@ public class BasePresenter<E extends BaseView>
 
     private void attachView(E view) { this.view = view; }
 
-    public E getView() { return this.view; }
+    E getView() { return this.view; }
 
     public void detachView(){this.view = null;}
 }

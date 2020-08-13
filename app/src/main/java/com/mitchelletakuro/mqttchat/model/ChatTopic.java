@@ -13,7 +13,7 @@ public class ChatTopic {
         return topic;
     }
 
-    public void setTopic(String topic) {
+    private void setTopic(String topic) {
         this.topic = topic;
     }
 }

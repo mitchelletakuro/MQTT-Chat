@@ -1,25 +1,21 @@
 package com.mitchelletakuro.mqttchat.activities;
 
-import android.content.DialogInterface;
+
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
-import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 
-import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.DefaultItemAnimator;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.afollestad.materialdialogs.DialogAction;
 import com.afollestad.materialdialogs.MaterialDialog;
 import com.mitchelletakuro.mqttchat.R;
 import com.mitchelletakuro.mqttchat.adapters.MqttSubscribedTopicListAdapter;
 import com.mitchelletakuro.mqttchat.adapters.MqttTopicListAdapter;
-import com.mitchelletakuro.mqttchat.listener.LVClickListener;
 import com.mitchelletakuro.mqttchat.model.ChatMsg;
 import com.mitchelletakuro.mqttchat.model.ChatTopic;
 import com.mitchelletakuro.mqttchat.presenter.BasePresenter;
@@ -48,15 +44,10 @@ public class MainActivity extends BaseActivity implements MainView {
         presenter = new MainPresenter(this);
         msgTopicEt = findViewById(R.id.message_topic_edittext);
         msgEt = findViewById(R.id.message_edittext);
-        sendBtn = findViewById(R.id.send_message_button);
+        sendBtn = findViewById(R.id.send_msg_btn);
         topicListRV = findViewById(R.id.message_list_view);
 
-        sendBtn.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                presenter.handleSendMessageAction(msgTopicEt.getText().toString(), msgEt.getText().toString());
-            }
-        });
+        sendBtn.setOnClickListener(view -> presenter.handleSendMessageAction(msgTopicEt.getText().toString(), msgEt.getText().toString()));
 
         presenter.initialize();
     }
@@ -115,14 +106,11 @@ public class MainActivity extends BaseActivity implements MainView {
                 .customView(R.layout.add_topic_subscription, true)
                 .positiveText(R.string.subscribe_label)
                 .negativeText(android.R.string.cancel)
-                .onPositive(new MaterialDialog.SingleButtonCallback() {
-                    @Override
-                    public void onClick(@NonNull MaterialDialog dialog, @NonNull DialogAction which) {
-                        EditText topicEdittext;
-                        if (dialog.getCustomView() != null) {
-                            topicEdittext = dialog.getCustomView().findViewById(R.id.subscription_topic_edittext);
-                            presenter.handleSubscribeToTopicAction(topicEdittext.getText().toString());
-                        }
+                .onPositive((dialog1, which) -> {
+                    EditText topicEdittext;
+                    if (dialog1.getCustomView() != null) {
+                        topicEdittext = dialog1.getCustomView().findViewById(R.id.subscription_topic_edittext);
+                        presenter.handleSubscribeToTopicAction(topicEdittext.getText().toString());
                     }
                 }).build();
         dialog.show();
@@ -142,12 +130,7 @@ public class MainActivity extends BaseActivity implements MainView {
     @Override
     public void updateSubscribedTopics(List<ChatTopic> chatTopicList) {
         mqttSubscribedTopicListAdapter = new MqttSubscribedTopicListAdapter(chatTopicList);
-        mqttSubscribedTopicListAdapter.setDeleteItemClickListener(new LVClickListener() {
-            @Override
-            public void onClick(View view, int position) {
-                presenter.handleUnsubscribeAction(position);
-            }
-        });
+        mqttSubscribedTopicListAdapter.setLvClickListener((view, position) -> presenter.handleUnsubscribeAction(position));
         RecyclerView.LayoutManager mLayoutManager = new LinearLayoutManager(getApplicationContext());
         subscribedTopicListRV.setHasFixedSize(true);
         subscribedTopicListRV.setLayoutManager(mLayoutManager);
@@ -158,18 +141,8 @@ public class MainActivity extends BaseActivity implements MainView {
     @Override
     public void updateTopicMessages(List<ChatMsg> chatMsgList) {
         mqttTopicListAdapter = new MqttTopicListAdapter(chatMsgList);
-        mqttTopicListAdapter.setDeleteItemClickListener(new LVClickListener() {
-            @Override
-            public void onClick(View view, int position) {
-                presenter.handleDeleteTopicMessageAction(position);
-            }
-        });
-        mqttTopicListAdapter.setItemClickListener(new LVClickListener() {
-            @Override
-            public void onClick(View view, int position) {
-                presenter.handleTopicMessageClickAction(position);
-            }
-        });
+        mqttTopicListAdapter.setDeleteItemClickListener((view, position) -> presenter.handleDeleteTopicMessageAction(position));
+        mqttTopicListAdapter.setItemClickListener((view, position) -> presenter.handleTopicMessageClickAction(position));
         RecyclerView.LayoutManager mLayoutManager = new LinearLayoutManager(getApplicationContext());
         topicListRV.setHasFixedSize(true);
         topicListRV.setLayoutManager(mLayoutManager);
@@ -190,26 +163,17 @@ public class MainActivity extends BaseActivity implements MainView {
     @Override
     public void showSubscribedTopics(List<ChatTopic> chatTopicList) {
         mqttSubscribedTopicListAdapter = new MqttSubscribedTopicListAdapter(chatTopicList);
-        mqttSubscribedTopicListAdapter.setDeleteItemClickListener(new LVClickListener() {
-            @Override
-            public void onClick(View view, int position) {
-                subscribedTopicsDialog.dismiss();
-                presenter.handleUnsubscribeAction(position);
-            }
+        mqttSubscribedTopicListAdapter.setLvClickListener((view, position) -> {
+            subscribedTopicsDialog.dismiss();
+            presenter.handleUnsubscribeAction(position);
         });
         RecyclerView.LayoutManager mLayoutManager = new LinearLayoutManager(getApplicationContext());
         subscribedTopicsDialog = new MaterialDialog.Builder(this)
                 .title(R.string.subscribed_topics_text)
                 .negativeText(android.R.string.cancel)
-                .cancelListener(new DialogInterface.OnCancelListener() {
-                    @Override
-                    public void onCancel(DialogInterface dialog) {
-                    }
+                .cancelListener(dialog -> {
                 })
-                .dismissListener(new DialogInterface.OnDismissListener() {
-                    @Override
-                    public void onDismiss(DialogInterface dialog) {
-                    }
+                .dismissListener(dialog -> {
                 })
                 .adapter(mqttSubscribedTopicListAdapter, mLayoutManager)
                 .build();
@@ -223,18 +187,8 @@ public class MainActivity extends BaseActivity implements MainView {
                 .content("Are you sure you want to continue this action?")
                 .positiveText(R.string.delete_text)
                 .negativeText(android.R.string.cancel)
-                .onPositive(new MaterialDialog.SingleButtonCallback() {
-                    @Override
-                    public void onClick(@NonNull MaterialDialog dialog, @NonNull DialogAction which) {
-                        presenter.deleteTopicMessage(position);
-                    }
-                })
-                .onNegative(new MaterialDialog.SingleButtonCallback() {
-                    @Override
-                    public void onClick(@NonNull MaterialDialog dialog, @NonNull DialogAction which) {
-                        dialog.dismiss();
-                    }
-                }).build();
+                .onPositive((dialog1, which) -> presenter.deleteTopicMessage(position))
+                .onNegative((dialog12, which) -> dialog12.dismiss()).build();
         dialog.show();
     }
 }

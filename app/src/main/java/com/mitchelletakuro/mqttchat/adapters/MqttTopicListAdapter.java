@@ -1,5 +1,4 @@
 package com.mitchelletakuro.mqttchat.adapters;
-;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -20,7 +19,6 @@ public class MqttTopicListAdapter extends
 {
     private List<ChatMsg> chatMsgList;
     private LVClickListener itemClickListener;
-    public LVClickListener editItemClickListener;
     private LVClickListener deleteItemClickListener;
 
     public void setItemClickListener(LVClickListener itemClickListener)
@@ -33,7 +31,7 @@ public class MqttTopicListAdapter extends
         this.deleteItemClickListener = deleteItemClickListener;
     }
 
-    class MqttTopicMessageViewHolder extends RecyclerView.ViewHolder{
+    static class MqttTopicMessageViewHolder extends RecyclerView.ViewHolder{
 
         View topicMessageView;
         View messageDeleteButton;
@@ -76,22 +74,12 @@ public class MqttTopicListAdapter extends
         ChatMsg chatMsg = this.getList().get(position);
         if(itemClickListener != null)
         {
-            holder.topicMessageView.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View view) {
-                    itemClickListener.onClick(view,position);
-                }
-            });
+            holder.topicMessageView.setOnClickListener(view -> itemClickListener.onClick(view,position));
         }
 
         if(deleteItemClickListener != null)
         {
-            holder.messageDeleteButton.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View view) {
-                    deleteItemClickListener.onClick(view,position);
-                }
-            });
+            holder.messageDeleteButton.setOnClickListener(view -> deleteItemClickListener.onClick(view,position));
         }
 
         holder.messageDeleteButton.setVisibility(View.GONE);

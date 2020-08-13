@@ -35,6 +35,7 @@ public abstract class BaseActivity extends AppCompatActivity implements BaseView
 
     }
 
+
     @Override
     public void showProgress(String title) {
         alert =  new IonAlert (this, IonAlert.PROGRESS_TYPE)
@@ -51,25 +52,32 @@ public abstract class BaseActivity extends AppCompatActivity implements BaseView
         }
     }
 
+
+
     @Override
     public void onSuccess(String message) {
 
         alert =  new IonAlert (this, IonAlert.SUCCESS_TYPE)
                 .setTitleText(getString(R.string.alert_success_title))
-                .setContentText(message);
+                .setContentText(message)
+                .setConfirmClickListener(ionAlert -> alert.dismissWithAnimation());
 
         alert.show();
-        alert.dismiss();
+
     }
+
+
 
     @Override
     public void onFailed(String message) {
 
         alert =  new IonAlert (this, IonAlert.ERROR_TYPE)
                 .setTitleText(getString(R.string.alert_error_title))
-                .setContentText(message);
+                .setContentText(message)
+                .setConfirmClickListener(ionAlert -> alert.dismissWithAnimation());
+
         alert.show();
-        alert.dismiss();
+
 
     }
 }

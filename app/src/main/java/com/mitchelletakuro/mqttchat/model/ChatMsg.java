@@ -38,7 +38,7 @@ public class ChatMsg {
         return topic;
     }
 
-    public void setTopic(String topic) {
+    private void setTopic(String topic) {
         this.topic = topic;
     }
 
@@ -46,7 +46,7 @@ public class ChatMsg {
         return message;
     }
 
-    public void setMessage(MqttMessage message) {
+    private void setMessage(MqttMessage message) {
         this.message = message;
     }
 

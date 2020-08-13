@@ -79,7 +79,7 @@
                 android:layout_height="wrap_content" />
 
             <Button
-                android:id="@+id/send_message_button"
+                android:id="@+id/send_msg_btn"
                 android:text="@string/send_text"
                 android:layout_gravity="center_vertical"
                 android:layout_weight="1"

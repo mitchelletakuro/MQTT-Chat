@@ -8,10 +8,4 @@
     <item
         android:id="@+id/menu_action_subscribed_topics"
         android:title="@string/show_subscribed_topics_text" />
-    <item
-        android:id="@+id/menu_action_settings"
-        android:title="Settings" />
-    <item
-        android:id="@+id/menu_action_logout"
-        android:title="Logout" />
 </menu>

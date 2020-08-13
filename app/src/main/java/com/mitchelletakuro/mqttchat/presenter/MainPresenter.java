@@ -20,6 +20,7 @@ import org.eclipse.paho.client.mqttv3.MqttClient;
 import org.eclipse.paho.client.mqttv3.MqttException;
 import org.eclipse.paho.client.mqttv3.MqttMessage;
 
+import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Timer;
@@ -27,7 +28,6 @@ import java.util.TimerTask;
 
 public class MainPresenter extends BasePresenter<MainView> {
 
-    private String BROKER_URL = "tcp://broker.hivemq.com:1883";
     private String clientId = MqttClient.generateClientId();
 
     private MqttAndroidClient mttqClient;
@@ -69,6 +69,7 @@ public class MainPresenter extends BasePresenter<MainView> {
 
     private void connect(IMqttActionListener listener) {
         view.showProgress(((AppCompatActivity)view).getString(R.string.alert_connection_loader_title));
+        String BROKER_URL = "tcp://broker.hivemq.com:1883";
         mttqClient = new MqttAndroidClient((Context) view, BROKER_URL, clientId);
         try {
             IMqttToken token = mttqClient.connect();
@@ -218,7 +219,7 @@ public class MainPresenter extends BasePresenter<MainView> {
     private void sendTopicMessage(final String topic, final String topicMessage) {
         byte[] encodedMessage;
         try {
-            encodedMessage = topicMessage.getBytes("UTF-8");
+            encodedMessage = topicMessage.getBytes(StandardCharsets.UTF_8);
             final MqttMessage message = new MqttMessage(encodedMessage);
 
             ChatMsg waitingMessage = new ChatMsg(topic, message, ChatContentType.PENDING);

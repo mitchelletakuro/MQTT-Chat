@@ -17,29 +17,22 @@ import java.util.List;
 public class MqttSubscribedTopicListAdapter extends RecyclerView.Adapter<MqttSubscribedTopicListAdapter.MqttSubscribedTopicViewHolder>
 {
     private List<ChatTopic> chatTopicList;
-    private LVClickListener itemClickListener;
-    private LVClickListener deleteItemClickListener;
+    private LVClickListener lvClickListener;
 
-    public void setItemClickListener(LVClickListener itemClickListener)
+    public void setLvClickListener(LVClickListener lvClickListener)
     {
-        this.itemClickListener = itemClickListener;
+        this.lvClickListener = lvClickListener;
     }
 
-    public void setDeleteItemClickListener(LVClickListener deleteItemClickListener)
+    static class MqttSubscribedTopicViewHolder extends RecyclerView.ViewHolder
     {
-        this.deleteItemClickListener = deleteItemClickListener;
-    }
-
-    class MqttSubscribedTopicViewHolder extends RecyclerView.ViewHolder
-    {
-        private View subscribedTopicView;
 
         TextView topicText;
         View topicDeleteButton;
 
         MqttSubscribedTopicViewHolder(View itemView) {
             super(itemView);
-            subscribedTopicView = itemView.findViewById(R.id.subscribed_topic_view);
+            itemView.findViewById(R.id.subscribed_topic_view);
             topicText = itemView.findViewById(R.id.subscribed_topic_text);
             topicDeleteButton = itemView.findViewById(R.id.subscribed_topic_delete_action);
         }
@@ -69,14 +62,9 @@ public class MqttSubscribedTopicListAdapter extends RecyclerView.Adapter<MqttSub
     @Override
     public void onBindViewHolder(@NonNull MqttSubscribedTopicViewHolder holder, final int position) {
         ChatTopic chatTopic = this.getList().get(position);
-        if(deleteItemClickListener != null)
+        if(lvClickListener != null)
         {
-            holder.topicDeleteButton.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View view) {
-                    deleteItemClickListener.onClick(view,position);
-                }
-            });
+            holder.topicDeleteButton.setOnClickListener(view -> lvClickListener.onClick(view,position));
         }
         holder.topicText.setText(chatTopic.getTopic());
     }
