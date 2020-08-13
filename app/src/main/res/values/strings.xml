@@ -1,0 +1,34 @@
+<resources>
+    <string name="app_name">Mqtt Chat</string>
+    <string name="topic_text">enter topic/user id</string>
+    <string name="message_hint">enter your message</string>
+    <string name="send_text">send</string>
+    <string name="alert_loading_title">Processing</string>
+    <string name="alert_loading_description">Please Wait</string>
+    <string name="subscribe_text">Subscribe to Topic</string>
+    <string name="subscribe_to_topic_text">Subscribe to Topic</string>
+    <string name="topic_hint">enter topic</string>
+    <string name="alert_success_title">Success</string>
+    <string name="mqtt_connection_success_message">Connection successful</string>
+    <string name="topic_subscription_success_message">Subscription to Topic successful</string>
+    <string name="alert_error_title">Error</string>
+    <string name="subscribe_label">Subscribe</string>
+    <string name="topic_mesage_list_topic_label">Topic:</string>
+    <string name="topic_message_list_date_label">Date:</string>
+    <string name="subscribed_topics_label">Subscribed Topics</string>
+    <string name="show_subscribed_topics_text">Show Subscribed Topics</string>
+    <string name="subscribe_to_topic_label">Subscribe to Topic</string>
+    <string name="subscribed_topics_text">Subscribed Topics</string>
+    <string name="topic_label">Topic</string>
+    <string name="messages_label">You can delete messages after 10secs of sending</string>
+    <string name="topic_message_list_status_text">Status:</string>
+    <string name="send_message_success_message">Message sent successfully</string>
+    <string name="unsubscribe_success_message">Topic removed from subscription</string>
+    <string name="alert_connection_loader_title">Connecting…</string>
+    <string name="content_description_delete_icon">delete icon</string>
+    <string name="delete_text">delete</string>
+    <string name="confirm_delete_message">Confirm delete action</string>
+    <string name="subscribe_message">Subscribe to Topic</string>
+    <string name="subscription_exists_message">Subscription already exists</string>
+    <string name="subscription_topic_empty_message">Subscription Topic is empty</string>
+</resources>
